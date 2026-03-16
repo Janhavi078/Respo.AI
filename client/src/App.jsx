@@ -1,121 +1,166 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+// // import React from 'react';
+// // import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// // // Pages
+// // import Home from './pages/Home';
+// // import Analyze from './pages/Analyze'; 
+// // import Feature from './pages/Feature'; // New Premium Dashboard Feature
+
+// // // Global Styles
+// // import './App.css'; 
+
+// // function App() {
+// //   return (
+// //     <Router>
+// //       <div className="App">
+// //         <Routes>
+// //           {/* Main Landing Page */}
+// //           <Route path="/" element={<Home />} />
+          
+// //           {/* Feature Squares Page */}
+// //           <Route path="/analyze" element={<Analyze />} />
+
+// //           {/* New Premium Dashboard Page */}
+// //           <Route path="/dashboard" element={<Feature />} />
+// //         </Routes>
+// //       </div>
+// //     </Router>
+// //   );
+// // }
+
+// // export default App;
+// import React, { useEffect } from 'react';
+// import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+// import { AnimatePresence, motion } from 'framer-motion';
+
+// // Pages
+// import Home from './pages/Home';
+// import Analyze from './pages/Analyze'; 
+// import Feature from './pages/Feature'; 
+
+// // Global Styles
+// import './App.css'; 
+
+// // Helper to reset scroll position on page change
+// const ScrollToTop = () => {
+//   const { pathname } = useLocation();
+//   useEffect(() => {
+//     window.scrollTo(0, 0);
+//   }, [pathname]);
+//   return null;
+// };
+
+// // This component handles the background color transition logic
+// const AnimatedRoutes = () => {
+//   const location = useLocation();
+
+//   // Define colors for each route to break the "too white" look
+//   const bgColorMap = {
+//     '/': '#131d3c',          // Very Soft Indigo/Blue for Home
+//     '/analyze': '#05182a',    // Clean Slate for Analyze
+//     '/dashboard': '#565656',  // Sleek Professional Grey for Feature/Dashboard
+//   };
+
+//   const currentBg = bgColorMap[location.pathname] || '#ffffff';
+
+//   return (
+//     <motion.div 
+//       animate={{ backgroundColor: currentBg }}
+//       transition={{ duration: 0.8, ease: "easeInOut" }}
+//       style={{ minHeight: '100vh', transition: 'background-color 0.8s ease' }}
+//     >
+//       <AnimatePresence mode="wait">
+//         <Routes location={location} key={location.pathname}>
+//           <Route path="/" element={<Home />} />
+//           <Route path="/analyze" element={<Analyze />} />
+//           <Route path="/dashboard" element={<Feature />} />
+//         </Routes>
+//       </AnimatePresence>
+//     </motion.div>
+//   );
+// };
+
+// function App() {
+//   return (
+//     <Router>
+//       <ScrollToTop />
+//       <div className="App">
+//         <AnimatedRoutes />
+//       </div>
+//     </Router>
+//   );
+// }
+
+// export default App;
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+
+// Pages
+import Home from './pages/Home';
+import Analyze from './pages/Analyze'; 
+import Feature from './pages/Feature'; 
+
+// Components
+import Footer from './components/Footer'; // Make sure the path matches your structure
+
+// Global Styles
+import './App.css'; 
+
+// Helper to reset scroll position on page change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
+
+// This component handles the background color transition logic
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
+  // Define colors for each route to match your request
+  const bgColorMap = {
+    '/': '#050a19',          // Dark Indigo/Blue for Home
+    '/analyze': '#05182a',    // Dark Slate for Analyze
+    '/dashboard': '#565656',  // Sleek Professional Grey for Dashboard
+  };
+
+  const currentBg = bgColorMap[location.pathname] || '#ffffff';
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <motion.div 
+      animate={{ backgroundColor: currentBg }}
+      transition={{ duration: 0.8, ease: "easeInOut" }}
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
+    >
+      <div style={{ flex: 1 }}>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Home />} />
+            <Route path="/analyze" element={<Analyze />} />
+            <Route path="/dashboard" element={<Feature />} />
+          </Routes>
+        </AnimatePresence>
+      </div>
+      
+      {/* Footer is placed here so it appears on every page */}
+      <Footer />
+    </motion.div>
+  );
+};
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+function App() {
+  return (
+    <Router>
+      <ScrollToTop />
+      <div className="App">
+        <AnimatedRoutes />
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;
